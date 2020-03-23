@@ -8,6 +8,7 @@ ENV SONARQUBE_VERSION=7.9.2 \
     SONARQUBE_JDBC_USERNAME="" \
     SONARQUBE_JDBC_PASSWORD="" \
     SONARQUBE_JDBC_URL="" \
+    SONARQUBE_SEARCH_JVM_OPTS="" \
     SONARQUBE_WEB_JVM_OPTS=""
 
 RUN yum -y install java-11-openjdk-headless nss_wrapper unzip && \
