@@ -67,6 +67,7 @@ spec:
           ports:
             - containerPort: 9000
               protocol: TCP
+              name: http
           env:
             - name: SONARQUBE_JDBC_URL
               value: ''
@@ -93,19 +94,19 @@ spec:
           startupProbe:
             httpGet:
               path: /
-              port: 9000
+              port: http
             failureThreshold: 30
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
-              port: 9000
+              port: http
             failureThreshold: 5
             periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /
-              port: 9000
+              port: http
             failureThreshold: 5
             periodSeconds: 15
       volumes:
