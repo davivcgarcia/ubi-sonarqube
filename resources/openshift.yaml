@@ -1,3 +1,48 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonarqube-conf
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonarqube-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 60Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonarqube-logs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonarqube-extensions
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -24,17 +69,20 @@ spec:
               protocol: TCP
           env:
             - name: SONARQUBE_JDBC_URL
-              value: 'jdbc:postgresql://postgresql/sonarqube'
+              value: ''
             - name: SONARQUBE_JDBC_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql
-                  key: database-user
+              value: ''
             - name: SONARQUBE_JDBC_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql
-                  key: database-password
+              value: ''
+          volumeMounts:
+            - name: conf
+              mountPath: /opt/sonarqube/conf
+            - name: data
+              mountPath: /opt/sonarqube/data
+            - name: logs
+              mountPath: /opt/sonarqube/logs
+            - name: extensions
+              mountPath: /opt/sonarqube/extensions
           resources:
             requests:
               memory: "4096Mi"
@@ -42,3 +90,55 @@ spec:
             limits:
               memory: "8912Mi"
               cpu: "4"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            failureThreshold: 1
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9000
+            failureThreshold: 1
+            periodSeconds: 10
+      volumes:
+        - name: conf
+          persistentVolumeClaim:
+            claimName: sonarqube-conf
+        - name: data
+          persistentVolumeClaim:
+            claimName: sonarqube-data
+        - name: logs
+          persistentVolumeClaim:
+            claimName: sonarqube-logs
+        - name: extensions
+          persistentVolumeClaim:
+            claimName: sonarqube-extensions
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarqube
+spec:
+  selector:
+    app: sonarqube
+  ports:
+  - protocol: TCP
+    port: 9000
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: sonarqube
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  to:
+    kind: Service
+    name: sonarqube
+    weight: 100
+  port:
+    targetPort: 9000
+  wildcardPolicy: None
+    
