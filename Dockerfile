@@ -50,10 +50,7 @@ RUN yum -y install java-11-openjdk-headless nss_wrapper unzip && \
     rm -rf sonarqube.zip* && \
     rm -rf ${SONARQUBE_HOME}/bin/* && \
     cd ${SONARQUBE_HOME}
-<<<<<<< HEAD
-=======
     
->>>>>>> Refactoring Dockerfile and entrypoint script
 #
 # Prepare the image for running on OpenShift
 #
