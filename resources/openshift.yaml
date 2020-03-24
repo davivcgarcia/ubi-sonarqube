@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sonarqube
+  labels:
+    app: sonarqube
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sonarqube
+  template:
+    metadata:
+      labels:
+        app: sonarqube
+    spec:
+      containers:
+        - name: sonarqube
+          image: quay.io/davivcgarcia/ubi-sonarqube:latest
+          ports:
+            - containerPort: 9000
+              protocol: TCP
+          env:
+            - name: SONARQUBE_JDBC_URL
+              value: 'jdbc:postgresql://postgresql/sonarqube'
+            - name: SONARQUBE_JDBC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-user
+            - name: SONARQUBE_JDBC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql
+                  key: database-password
+          resources:
+            requests:
+              memory: "4096Mi"
+              cpu: "2"
+            limits:
+              memory: "8912Mi"
+              cpu: "4"
