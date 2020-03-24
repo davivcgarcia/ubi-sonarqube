@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: sonarqube
-          image: quay.io/davivcgarcia/ubi-sonarqube:latest
+          image: quay.io/davivcgarcia/ubi-sonarqube:stable
           ports:
             - containerPort: 9000
               protocol: TCP
@@ -90,18 +90,24 @@ spec:
             limits:
               memory: "8912Mi"
               cpu: "4"
+          startupProbe:
+            httpGet:
+              path: /
+              port: 9000
+            failureThreshold: 30
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /
               port: 9000
-            failureThreshold: 1
-            periodSeconds: 10
+            failureThreshold: 5
+            periodSeconds: 15
           readinessProbe:
             httpGet:
               path: /
               port: 9000
-            failureThreshold: 1
-            periodSeconds: 10
+            failureThreshold: 5
+            periodSeconds: 15
       volumes:
         - name: conf
           persistentVolumeClaim:
