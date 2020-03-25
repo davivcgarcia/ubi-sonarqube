@@ -12,13 +12,13 @@ This image was build using the [Red Hat Universal Base Image (UBI) 8](https://de
 If you running standalone containers, you can use `podman` or `docker` with:
 
 ```bash
-docker run -d -p 9000:9000 quay.io/davivcgarcia/ubi-sonarqube
+podman run -d -p 9000:9000 quay.io/davivcgarcia/ubi-sonarqube
 ```
 
-If you running containers on OpenShift/Kubernetes, and have dynamic provisioning enabled, you can use `kubectl` or `oc` to deploy it redirectly from this repo:
+If you running containers on OpenShift (or Kubernetes), and have dynamic provisioning enabled, you can use `kubectl` or `oc` to deploy it redirectly from this repo:
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/davivcgarcia/ubi-sonarqube/master/resources/openshift.yaml
+oc apply -f https://raw.githubusercontent.com/davivcgarcia/ubi-sonarqube/master/resources/openshift.yaml
 ```
 
 If you don't have dynamic provisioning for PersistentVolumes enabled and a default storage class, please checkout the resource template and make the required modifications before the deployment.
