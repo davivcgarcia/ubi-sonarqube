@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: sonarqube
-          image: quay.io/davivcgarcia/ubi-sonarqube:stable
+          image: quay.io/davivcgarcia/ubi-sonarqube
           ports:
             - containerPort: 9000
               protocol: TCP
