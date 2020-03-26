@@ -18,7 +18,7 @@ podman run -d -p 9000:9000 quay.io/davivcgarcia/ubi-sonarqube
 If you running containers on OpenShift (or Kubernetes using Ingress instead of Router API), and have dynamic provisioning enabled, you can use `kubectl` or `oc` to deploy it redirectly from this repo:
 
 ```bash
-oc apply -f https://raw.githubusercontent.com/davivcgarcia/ubi-sonarqube/master/resources/openshift.yaml
+oc apply -f https://github.com/davivcgarcia/ubi-sonarqube/releases/latest/download/openshift-resources.yaml
 ```
 
 If you don't have dynamic provisioning for PersistentVolumes enabled and a default storage class, please checkout the resource template and make the required modifications before the deployment.
