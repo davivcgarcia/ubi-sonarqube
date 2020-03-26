@@ -86,10 +86,10 @@ spec:
               mountPath: /opt/sonarqube/extensions
           resources:
             requests:
-              memory: "4096Mi"
+              memory: "4Gi"
               cpu: "2"
             limits:
-              memory: "8912Mi"
+              memory: "8Gi"
               cpu: "4"
           startupProbe:
             httpGet:
