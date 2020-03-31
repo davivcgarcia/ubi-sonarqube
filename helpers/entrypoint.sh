@@ -18,6 +18,14 @@ export NSS_WRAPPER_PASSWD=${SONARQUBE_HOME}/nss_wrapper-passwd
 export NSS_WRAPPER_GROUP=/etc/group
 
 #
+# Expose common environment variables
+#
+
+export USER=${SONARQUBE_USER}
+export HOME=${SONARQUBE_HOME}
+export LANG=en_US.UTF-8
+
+#
 # Executes user provided command instead of default
 #
 
